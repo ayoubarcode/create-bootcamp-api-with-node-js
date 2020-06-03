@@ -1,8 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const fileupload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 const colors = require('colors');
 const errorHandler = require('./middleware/errors');
+const path = require('path');
 
 const connectDB = require('./config/db');
 
@@ -17,17 +20,28 @@ const app = express();
 // body parser
 app.use(express.json());
 
+// Cookie parser
+app.use(cookieParser());
+
 // Dev Logging middlware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// File uploading
+app.use(fileupload());
+
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Route files
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
