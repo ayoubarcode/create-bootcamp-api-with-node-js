@@ -45,11 +45,12 @@ build/Release
 
 # Dependency directories
 node_modules/
+client/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
-
+_data/
 # TypeScript cache
 *.tsbuildinfo
 
