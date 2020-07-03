@@ -47,7 +47,9 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 //? @route  GET /api/v1/bootcamps/i:id
 //* @access Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const single_bootcamp = await Bootcamp.findById(req.params.id);
+  const single_bootcamp = await Bootcamp.findById(req.params.id).populate(
+    'courses'
+  );
 
   if (!single_bootcamp) {
     return next(
@@ -148,6 +150,31 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   });
 });
 
+// todo @desc get bootcamp by user
+//? @route GET /api/v1/bootcamp/:id/user
+//@access Private
+
+exports.getBootcampByUser = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findOne({ user: req.user.id });
+  if (!bootcamp) {
+    return next(new ErrorResponse(`No bootcamp for id ${req.user.id}`, 404));
+  }
+
+  if (bootcamp.user.toString() !== req.user.id) {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to get this boootcamp`,
+        401
+      )
+    );
+  }
+
+  res.status(200).json({
+    data: bootcamp,
+    success: true,
+  });
+});
+
 // todo @desc  Upload photo got the bootcamp
 //? @route  PUT /api/v1/bootcamps/:id/photo
 //@access Private
@@ -158,10 +185,7 @@ exports.bootcampUplodPhoto = asyncHandler(async (req, res, next) => {
   }
 
   //Make sure user is bootcamp owner
-  if (
-    delete_bootcamp.user.toString() !== req.user.id &&
-    req.user.role !== 'admin'
-  ) {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
         `User ${req.params.id} is not authorized to update this boootcamp`,
@@ -176,6 +200,8 @@ exports.bootcampUplodPhoto = asyncHandler(async (req, res, next) => {
 
   const file = req.files.file;
 
+  console.log(`this is headers`);
+  console.log(JSON.stringify(req.headers));
   // Make sure the image is a photo
   if (!file.mimetype.startsWith('image')) {
     return next(new ErrorResponse(`please upload an image file`, 400));
