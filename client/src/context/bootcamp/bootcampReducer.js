@@ -44,6 +44,7 @@ export default (state, action) => {
         ...state,
         current: null,
         loading: false,
+        error: 'aza',
       };
     case BOOTCAMPS_FAIL:
       return {

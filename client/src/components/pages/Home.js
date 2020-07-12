@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
+import AlertContext from './../../context/alert/alertContext';
+import AuthContext from './../../context/auth/authContext';
+
+//
 import viewImage from './../../static/images/2389282-min.jpg';
 import PropTypes from 'prop-types';
-import AuthContext from './../../context/auth/authContext';
 
 import {
   MDBMask,
@@ -11,12 +14,13 @@ import {
   MDBView,
   MDBContainer,
   toast,
-  ToastContainer,
 } from 'mdbreact';
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
   const { loadUser } = authContext;
+  const { setAlert } = alertContext;
 
   useEffect(() => {
     loadUser();
@@ -41,7 +45,8 @@ const Home = (props) => {
     console.log(radius);
 
     if (zipcode === '' || miles === '') {
-      toast.warn('must fill all fields', { closeButton: true });
+      setAlert('must fill all fields please !', 'text-danger');
+      // toast.warn('must fill all fields', { closeButton: true });
     } else {
       props.history.push(`/bootcamps/${zipcode}/${miles}`);
     }
@@ -99,12 +104,6 @@ const Home = (props) => {
           </form>
         </MDBContainer>
       </MDBMask>
-      <ToastContainer
-        hideProgressBar={true}
-        newestOnTop={true}
-        autoClose={5000}
-        icon="envelope"
-      />
     </MDBView>
   );
 };

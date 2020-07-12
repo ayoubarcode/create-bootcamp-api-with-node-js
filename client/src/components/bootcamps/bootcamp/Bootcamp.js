@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import CourseBootcamp from './CourseBootcamp';
 import BootcampContext from './../../../context/bootcamp/bootcampContext';
 import Preload from './../../pages/Preload';
+import My404Component from './../../pages/My404Component';
 
 import {
   MDBContainer,
@@ -13,11 +14,12 @@ import {
   MDBListGroup,
   MDBListGroupItem,
   MDBIcon,
+  MDBLink,
 } from 'mdbreact';
 
 const Bootcamp = (props) => {
   const bootcmapContext = useContext(BootcampContext);
-  const { getSingleBootcamp, current, loading } = bootcmapContext;
+  const { getSingleBootcamp, current, loading, error } = bootcmapContext;
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -26,6 +28,10 @@ const Bootcamp = (props) => {
 
   if (loading) {
     return <Preload />;
+  }
+
+  if (current === null) {
+    return <My404Component />;
   }
   return (
     <MDBContainer className="py-5">
@@ -43,9 +49,7 @@ const Bootcamp = (props) => {
           )}
 
           <CourseBootcamp
-            courses={
-              current && current.courses.length > 0 ? current.courses : null
-            }
+            courses={current && current.courses ? current.courses : null}
           />
         </MDBCol>
         <MDBCol md="4">
@@ -63,6 +67,24 @@ const Bootcamp = (props) => {
                 8.8
               </MDBBadge>
             </MDBBtn>
+            <a href="reviews.html" class="btn btn-dark btn-block my-3">
+              <i class="fas fa-comments" aria-hidden="true"></i> Read Reviews
+            </a>
+
+            <MDBLink
+              to={`/add-review/${current.id}`}
+              class="btn btn-light btn-block my-3"
+            >
+              <i class="fas fa-pencil-alt" aria-hidden="true"></i> Write a
+              Review
+            </MDBLink>
+            <a
+              href="#"
+              target="_blank"
+              class="btn btn-secondary btn-block my-3"
+            >
+              <i class="fas fa-globe" aria-hidden="true"></i> Visit Website
+            </a>
           </div>
           <MDBListGroup className="py-3">
             <MDBListGroupItem>
