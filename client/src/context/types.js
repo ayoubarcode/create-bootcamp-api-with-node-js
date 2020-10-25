@@ -20,8 +20,13 @@ export const SET_CURRENT = 'SET_CURRENT';
 export const CLEAR_CURRENT = 'CLEAR_CURRENT';
 
 // Review types
+export const GET_REVIEWS = 'GET_REVIEWS';
+export const GET_CURRENT = 'GET_CURRENT';
 export const ADD_REVIEW = 'ADD_REVIEW';
+export const REVIEW_FAILED = 'REVIEW_FAILED';
 export const CHANGE_REVIEW = 'CHANGE_REVIEW';
+export const CLEAR_REVIEWS = 'CLEAR_REVIEWS';
+export const FAILED_REVIEW = 'FAILED_REVIEW';
 
 // Alert types
 export const SET_ALERT = 'SET_ALERT';

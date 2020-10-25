@@ -1,11 +1,23 @@
 import React, { useEffect, useContext, useState } from 'react';
 import BootcampContext from './../../../context/bootcamp/bootcampContext';
 import AuthContext from './../../../context/auth/authContext';
+import AlertContext from './../../../context/alert/alertContext';
 import Preload from './../../pages/Preload';
 import { ToastContainer, toast, MDBLink, MDBIcon } from 'mdbreact';
 const ManageBootcmap = () => {
+  const authContext = useContext(AuthContext);
   const bootcampContext = useContext(BootcampContext);
-  const { current, loading, getManageBootcamp, uploadPhoto } = bootcampContext;
+  const alertContext = useContext(AlertContext);
+
+  const { user } = authContext;
+  const {
+    current,
+    loading,
+    getManageBootcamp,
+    uploadPhoto,
+    photo_name,
+  } = bootcampContext;
+  const { setAlert } = alertContext;
 
   const [selectedFile, SetSelectedFile] = useState(null);
   useEffect(() => {
@@ -26,8 +38,38 @@ const ManageBootcmap = () => {
       const data = new FormData();
       data.append('file', selectedFile);
       uploadPhoto(current.id, data);
+      SetSelectedFile(data.name);
+
+      setAlert(
+        'successfully uploaded',
+        'success',
+        'success',
+        'check-circle',
+        5000
+      );
+
+      console.log(`data is ${JSON.stringify(data)}`);
+      // SetSelectedFile()
     }
   };
+  if (user) {
+    if (user.role === 'user') {
+      return (
+        <h1 className="py-5 mt-5 text-center">
+          {' '}
+          YOU CANNOT ADD A BOOTCAMP <MDBIcon far icon="frown" />{' '}
+          <p>
+            <MDBLink type="button" rounded color="success" to="/">
+              BACK
+            </MDBLink>
+          </p>
+        </h1>
+      );
+    }
+  }
+  if (loading) {
+    return <Preload />;
+  }
 
   if (!current) {
     return (
@@ -43,9 +85,6 @@ const ManageBootcmap = () => {
     );
   }
 
-  if (loading) {
-    return <Preload />;
-  }
   return (
     <section className="container mt-5 py-5">
       <div className="row">
@@ -65,12 +104,12 @@ const ManageBootcmap = () => {
                   <div className="col-md-8">
                     <div className="card-body">
                       <h5 className="card-title">
-                        <a href="bootcamp.html">
+                        <MDBLink to={`/bootcamp/${current.id}`}>
                           {current && current.name}
                           <span className="float-right badge badge-success">
                             8.8
                           </span>
-                        </a>
+                        </MDBLink>
                       </h5>
                       <span className="badge badge-dark mb-2">
                         {current.location.city ? current.location.city : null},{' '}
@@ -110,12 +149,13 @@ const ManageBootcmap = () => {
               >
                 Edit Bootcamp Details
               </MDBLink>
-              <a
+              <MDBLink
+                to="/courses/manage"
                 href="manage-courses.html"
                 className="btn btn-secondary btn-block"
               >
                 Manage Courses
-              </a>
+              </MDBLink>
               <a href="#" className="btn btn-danger btn-block">
                 Remove Bootcamp
               </a>

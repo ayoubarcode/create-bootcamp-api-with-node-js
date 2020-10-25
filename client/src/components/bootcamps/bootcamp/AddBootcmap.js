@@ -1,20 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody } from 'mdbreact';
 import AuthContext from './../../../context/auth/authContext';
+import AlertContext from './../../../context/alert/alertContext';
 import BootcampContext from './../../../context/bootcamp/bootcampContext';
 import Preload from './../../pages/Preload';
 
+// utils
+import useLocalStorage from './../../../utils/useLocalStorage';
+
 const AddBootcmap = () => {
   const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
   const bootcampContext = useContext(BootcampContext);
+  const { user } = authContext;
+  const { setAlert } = alertContext;
   const {
     addCootcamp,
     updateBootcamp,
     getManageBootcamp,
     current,
+    error,
     loading,
   } = bootcampContext;
-  const { loadUser } = authContext;
+  // const { loadUser } = authContext;
 
   useEffect(() => {
     getManageBootcamp();
@@ -36,6 +44,13 @@ const AddBootcmap = () => {
     jobGuarantee: false,
     acceptGi: false,
   });
+
+  // useEffect(() => {
+  //   getManageBootcamp();
+  //   if (current !== null) {
+  //     setBootcamp(current);
+  //   }
+  // });
 
   const {
     name,
@@ -60,7 +75,6 @@ const AddBootcmap = () => {
   const justNumber = (e) => {
     const keyCode = e.keyCode || e.which;
     const keyValue = String.fromCharCode(keyCode);
-    console.log(keyValue);
     if (/\+|-/.test(keyValue)) {
       e.preventDefault();
     }
@@ -75,16 +89,46 @@ const AddBootcmap = () => {
   // handle submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (current === null) {
-      addCootcamp(bootcamp);
-    } else {
-      updateBootcamp(current.id, bootcamp);
-      console.log(`update bootcamp ${current.id}`);
-    }
 
-    // bootcamp.forEach((b) => {
-    //   console.log(b);
-    // });
+    if (user.role === 'publisher') {
+      if (current === null) {
+        addCootcamp(bootcamp);
+
+        if (error) {
+          setAlert(error, 'error', 'danger', 'exclamation-triangle', 5000);
+        } else {
+          setAlert(
+            'Added successfully',
+            'success',
+            'success',
+            'check-circle',
+            5000
+          );
+        }
+        // alertContext;
+      } else {
+        updateBootcamp(current.id, bootcamp);
+        if (error) {
+          setAlert(error, 'error', 'danger', 'exclamation-triangle', 5000);
+        } else {
+          setAlert(
+            'updated successfully',
+            'success',
+            'success',
+            'check-circle',
+            5000
+          );
+        }
+      }
+    } else {
+      setAlert(
+        'you are not publisher ',
+        'error',
+        'danger',
+        'exclamation-triangle',
+        5000
+      );
+    }
   };
 
   if (loading) {

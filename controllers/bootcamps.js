@@ -68,6 +68,21 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   let bootcamp = await Bootcamp.findById(req.params.id);
 
+  //Copy req.query
+  const reqQuery = { ...req.query };
+
+  // fields to excludes
+  const removeFields = ['select', 'sort', 'limit', 'page'];
+
+  // Loop over removeFields and delete them from req query
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  // Create query String
+  let queryStr = JSON.stringify(reqQuery);
+
+  console.log(queryStr);
+  query = model.find(JSON.parse(queryStr));
+
   console.log(bootcamp);
 
   if (!bootcamp) {

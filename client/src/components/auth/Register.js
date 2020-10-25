@@ -20,10 +20,12 @@ const Register = (props) => {
   const { loading, register, isAuthenticated, loadUser } = authContext;
 
   useEffect(() => {
+    document.title = 'Register';
     loadUser();
     if (isAuthenticated) {
       props.history.push('/');
     }
+    //eslint-disable-next-line
   }, [isAuthenticated, props.history]);
 
   const [user, setUser] = useState({

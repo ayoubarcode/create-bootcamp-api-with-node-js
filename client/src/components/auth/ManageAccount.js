@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from './../../context/auth/authContext';
+import AlertContext from './../../context/alert/alertContext';
 
 const ManageAccount = () => {
   const authContext = useContext(AuthContext);
-  const { user, updateDetail } = authContext;
+  const alertContext = useContext(AlertContext);
+  const { user, updateDetail, error } = authContext;
+  const { setAlert } = alertContext;
 
   useEffect(() => {
     if (user !== null) {
@@ -29,6 +32,18 @@ const ManageAccount = () => {
       console.log('Error submit');
     } else {
       updateDetail({ name, email });
+    }
+
+    if (error) {
+      setAlert(error, 'Error', 'danger', 'exclamation-triangle', 5000);
+    } else {
+      setAlert(
+        'updated successufully',
+        'success',
+        'success',
+        'check-circle',
+        5000
+      );
     }
   };
 

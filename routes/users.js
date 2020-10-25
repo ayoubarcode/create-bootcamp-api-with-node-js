@@ -12,7 +12,7 @@ const User = require('./../models/User');
 
 const router = express.Router();
 
-const advancedResult = require('./../middleware/advancedREsult');
+const advancedResult = require('./../middleware/advancedResult');
 const { protect, authorize } = require('./../middleware/auth');
 
 router.use(protect);

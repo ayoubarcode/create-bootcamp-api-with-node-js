@@ -36,6 +36,7 @@ export default (state, action) => {
     case UPLOAD_PHOTO:
       return {
         ...state,
+        photo_name: action.payload,
         loading: false,
       };
 
@@ -44,7 +45,7 @@ export default (state, action) => {
         ...state,
         current: null,
         loading: false,
-        error: 'aza',
+        error: null,
       };
     case BOOTCAMPS_FAIL:
       return {

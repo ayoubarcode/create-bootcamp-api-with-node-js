@@ -1,12 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import ReviewContext from './../../context/reviews/reviewContext';
+import AlertContext from './../../context/alert/alertContext';
+import AuthContext from './../../context/auth/authContext';
+import BootcmapContext from './../../context/bootcamp/bootcampContext';
 
-const ReviewForm = () => {
+import My404Component from './../pages/My404Component';
+import Preload from './../pages/Preload';
+const ReviewForm = (props) => {
+  const reviewContext = useContext(ReviewContext);
+  const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
+  const bootcampContext = useContext(BootcmapContext);
+
+  const { loadUser } = authContext;
+  const { addReview, error } = reviewContext;
+  const { setAlert } = alertContext;
+  const { current, getSingleBootcamp, loading } = bootcampContext;
+
+  const bootcampId = props.match.params.id;
+
+  useEffect(() => {
+    getSingleBootcamp(bootcampId);
+    loadUser();
+    if (error) {
+      setAlert(error, 'error', 'danger', 6000);
+    }
+  }, [loading, error]);
   const [review, setReview] = useState({
     title: '',
     text: '',
     rating: '0',
   });
-
   const { title, text, rating } = review;
 
   const onChange = (e) => {
@@ -17,11 +41,39 @@ const ReviewForm = () => {
     e.preventDefault();
 
     if (title === '' || text === '' || rating === '') {
-      console.log('NO');
+      setAlert('you Must fill all fields', 'error', 'danger', 5000);
     } else {
-      console.log('YES');
+      addReview(review, bootcampId);
+    }
+
+    if (error !== null) {
+      setAlert(
+        'Erroor to added',
+        'error',
+        'danger',
+        'exclamation-triangle',
+        5000
+      );
+    } else {
+      setAlert(
+        'Successfully added',
+        'success',
+        'success',
+        'circle-check',
+        2000
+      );
     }
   };
+
+  if (loading) {
+    return <Preload />;
+  }
+
+  if (!current) {
+    // props.history.push('/');
+    return <My404Component />;
+  }
+
   return (
     <div className="mt-5 py-5">
       <div className="row">
@@ -35,7 +87,7 @@ const ReviewForm = () => {
                 <i className="fas fa-chevron-left" aria-hidden="true"></i>{' '}
                 Bootcamp Info
               </a>
-              <h1 className="mb-2">DevWorks Bootcamp</h1>
+              <h1 className="mb-2">{current && current.name}</h1>
               <h3 className="text-primary mb-4">Write a Review</h3>
               <p>
                 You must have attended and graduated this bootcamp to review

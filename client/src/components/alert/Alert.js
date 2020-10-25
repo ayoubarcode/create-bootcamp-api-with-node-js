@@ -1,24 +1,17 @@
 import React, { useContext } from 'react';
 import AlertContext from './../../context/alert/alertContext';
-import { MDBNotification, MDBContainer } from 'mdbreact';
+import { MDBNotification } from 'mdbreact';
 const Alert = () => {
   const alertContext = useContext(AlertContext);
-
-  //   const setupNotification = (alert) => {
-  //       switch(alert.type)
-  //       {
-
-  //       }
-  //     toast.warn('must fill all fields', { closeButton: true });
-  //   };
   return (
     alertContext.alerts.length > 0 &&
     alertContext.alerts.map((alert) => (
       <MDBNotification
+        key={alert.id}
         show
         fade
-        icon="exclamation-triangle"
-        iconClassName="text-danger"
+        icon={alert.icon}
+        iconClassName={`text-${alert.textcolor}`}
         title={alert.type}
         message={alert.msg}
         style={{

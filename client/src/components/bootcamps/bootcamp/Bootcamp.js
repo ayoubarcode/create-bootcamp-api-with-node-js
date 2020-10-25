@@ -67,23 +67,27 @@ const Bootcamp = (props) => {
                 8.8
               </MDBBadge>
             </MDBBtn>
-            <a href="reviews.html" class="btn btn-dark btn-block my-3">
-              <i class="fas fa-comments" aria-hidden="true"></i> Read Reviews
-            </a>
+            <MDBLink
+              to={`/read-reviews/${current.id}`}
+              className="btn btn-dark btn-block my-3"
+            >
+              <i className="fas fa-comments" aria-hidden="true"></i> Read
+              Reviews
+            </MDBLink>
 
             <MDBLink
               to={`/add-review/${current.id}`}
-              class="btn btn-light btn-block my-3"
+              className="btn btn-light btn-block my-3"
             >
-              <i class="fas fa-pencil-alt" aria-hidden="true"></i> Write a
+              <i className="fas fa-pencil-alt" aria-hidden="true"></i> Write a
               Review
             </MDBLink>
             <a
               href="#"
               target="_blank"
-              class="btn btn-secondary btn-block my-3"
+              className="btn btn-secondary btn-block my-3"
             >
-              <i class="fas fa-globe" aria-hidden="true"></i> Visit Website
+              <i className="fas fa-globe" aria-hidden="true"></i> Visit Website
             </a>
           </div>
           <MDBListGroup className="py-3">

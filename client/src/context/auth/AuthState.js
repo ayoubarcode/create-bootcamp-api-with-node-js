@@ -9,6 +9,7 @@ import {
   LOGIN_FAIL,
   AUTH_ERROR,
   UPDATE_DETAIL,
+  LOGOUT
 } from './../types';
 
 import AuthContext from './authContext';
@@ -21,6 +22,7 @@ const AuthState = (props) => {
     loading: true,
     user: null,
     error: null,
+    role: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -37,7 +39,7 @@ const AuthState = (props) => {
         payload: res.data,
       });
     } catch (error) {
-      dispatch({ type: AUTH_ERROR });
+      dispatch({ type: AUTH_ERROR, payload: error.response.data.error });
     }
   };
 
@@ -58,8 +60,10 @@ const AuthState = (props) => {
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: error.response.data.msg,
+        payload: error.response.data.error,
       });
+
+      return error
     }
   };
 
@@ -82,7 +86,7 @@ const AuthState = (props) => {
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: error.response.data.msg,
+        payload: error.response.data.error,
       });
     }
   };
@@ -107,10 +111,21 @@ const AuthState = (props) => {
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: 'Error',
+        payload: error.response.data,
       });
     }
   };
+
+
+  // Logout
+  const logout = async () =>  {
+        const res = await axios.get(`/api/v1/auth/logout`)
+        dispatch({
+          type: REGISTER_FAIL,
+          payload: res.data,
+        });    
+      
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -118,10 +133,12 @@ const AuthState = (props) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
+        role: state.role,
         register,
         loadUser,
         login,
         updateDetail,
+        logout
       }}
     >
       {props.children}

@@ -20,6 +20,7 @@ const BootcampState = (props) => {
     filtered: null,
     loading: true,
     error: null,
+    photo_name: null,
   };
 
   const [state, dispatch] = useReducer(bootcampreducer, initialState);
@@ -51,7 +52,7 @@ const BootcampState = (props) => {
     } catch (error) {
       dispatch({
         type: CLEAR_CURRENT,
-        payload: error.response.data.success,
+        payload: error.response.data.error,
       });
     }
   };
@@ -67,7 +68,7 @@ const BootcampState = (props) => {
     } catch (error) {
       dispatch({
         type: CLEAR_CURRENT,
-        payload: error.response.data.msg,
+        payload: error.response,
       });
     }
   };
@@ -88,7 +89,7 @@ const BootcampState = (props) => {
     } catch (error) {
       dispatch({
         type: BOOTCAMPS_FAIL,
-        payload: 'error',
+        payload: error.response.data.error,
       });
     }
   };

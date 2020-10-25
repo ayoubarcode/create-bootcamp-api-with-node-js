@@ -5,18 +5,23 @@ import { v4 as uuidv4 } from 'uuid';
 import AlertContext from './alertContext';
 import alertReducer from './alertReducer';
 import { SET_ALERT, REMOVE_ALERT } from './../types';
-import Alert from '../../components/alert/Alert';
 
 const AlertState = (props) => {
   const initialState = [];
 
   const [state, dispatch] = useReducer(alertReducer, initialState);
 
-  const setAlert = (msg, type, textcolor, timeout = 3000) => {
+  const setAlert = (
+    msg,
+    type,
+    textcolor = 'danger',
+    icon = 'exclamation-triangle',
+    timeout = 3000
+  ) => {
     const id = uuidv4();
     dispatch({
       type: SET_ALERT,
-      payload: { msg, type, textcolor, id },
+      payload: { msg, type, textcolor, icon, id },
     });
 
     setTimeout(() => {

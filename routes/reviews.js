@@ -13,7 +13,7 @@ const {
 const Review = require('./../models/Review');
 
 // middlewares
-const advancedResult = require('./../middleware/advancedREsult');
+const advancedResult = require('../middleware/advancedResult');
 const { protect, authorize } = require('./../middleware/auth');
 
 const router = express.Router({ mergeParams: true });

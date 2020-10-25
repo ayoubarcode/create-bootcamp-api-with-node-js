@@ -1,5 +1,6 @@
 import React, { useState, useContext, Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import {
   MDBNavbar,
   MDBNavbarBrand,
@@ -21,14 +22,21 @@ import BootcampContext from './../../context/bootcamp/bootcampContext';
 const Navbar = () => {
   const authContext = useContext(AuthContext);
   const bootcampContext = useContext(BootcampContext);
-  const { isAuthenticated, loading, loadUser, user } = authContext;
+  const { isAuthenticated, loadUser, user, logout } = authContext;
   const { current } = bootcampContext;
   const [isOpen, setisOpen] = useState(false);
-  console.log(isAuthenticated);
 
   useEffect(() => {
     loadUser();
-  }, [isAuthenticated]);
+    // eslint-disable-next-line
+  }, []);
+
+
+
+  const disconnected = () =>  {
+    logout()
+  }
+
   const toggleCollapse = () => {
     setisOpen(!isOpen);
   };
@@ -48,15 +56,19 @@ const Navbar = () => {
               <span className="mr-2">Account</span>
             </MDBDropdownToggle>
             <MDBDropdownMenu>
-              <MDBDropdownItem to="/bootcamps/add">
-                <Link to="/bootcamps/manage">Manage Bootcamp</Link>
-              </MDBDropdownItem>
-              <MDBDropdownItem to="/bootcamps/add">
-                <Link to="/bootcamps/add">
-                  {' '}
-                  {!current ? 'Add Bootcamp' : 'Edit Bootcamp'}
-                </Link>
-              </MDBDropdownItem>
+              {user && user.role === 'publisher' ? (
+                <MDBDropdownItem to="/bootcamps/add">
+                  <Link to="/bootcamps/manage">Manage Bootcamp</Link>
+                </MDBDropdownItem>
+              ) : null}
+              {user && user.role === 'publisher' ? (
+                <MDBDropdownItem to="/bootcamps/add">
+                  <Link to="/bootcamps/add">
+                    {' '}
+                    {!current ? 'Add Bootcamp' : 'Edit Bootcamp'}
+                  </Link>
+                </MDBDropdownItem>
+              ) : null}
               <MDBDropdownItem>
                 <Link to="/">Manage Reviews</Link>
               </MDBDropdownItem>
@@ -64,9 +76,9 @@ const Navbar = () => {
                 <Link to="/manage-account">Manage Account</Link>
               </MDBDropdownItem>
               <hr />
-              <MDBDropdownItem href="#!">
+              <MDBDropdownItem href="#!" onClick={disconnected}>
                 <MDBIcon icon="sign-out-alt mr-2" />
-                <Link to="/">Logout</Link>
+                Logout
               </MDBDropdownItem>
             </MDBDropdownMenu>
           </MDBDropdown>

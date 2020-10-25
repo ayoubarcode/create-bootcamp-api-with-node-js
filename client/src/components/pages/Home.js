@@ -13,7 +13,6 @@ import {
   MDBBtn,
   MDBView,
   MDBContainer,
-  toast,
 } from 'mdbreact';
 
 const Home = (props) => {
@@ -24,6 +23,7 @@ const Home = (props) => {
 
   useEffect(() => {
     loadUser();
+    document.title = 'Home';
     //eslint-disable-next-line
   }, []);
 
@@ -45,8 +45,13 @@ const Home = (props) => {
     console.log(radius);
 
     if (zipcode === '' || miles === '') {
-      setAlert('must fill all fields please !', 'text-danger');
-      // toast.warn('must fill all fields', { closeButton: true });
+      setAlert(
+        'must fill all fields please !',
+        'error',
+        'danger',
+        'exclamation-triangle',
+        4000
+      );
     } else {
       props.history.push(`/bootcamps/${zipcode}/${miles}`);
     }

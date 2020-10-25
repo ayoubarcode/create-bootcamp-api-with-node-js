@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import AlertContext from './../../context/alert/alertContext';
 import {
   MDBContainer,
   MDBRow,
@@ -13,23 +14,27 @@ import {
 } from 'mdbreact';
 
 import AuthContext from './../../context/auth/authContext';
+import { Redirect } from 'react-router-dom';
 
 const Login = (props) => {
   const authContext = useContext(AuthContext);
-  const { loading, login, isAuthenticated, loadUser } = authContext;
+  const alertContext = useContext(AlertContext);
+  const { loading, login, isAuthenticated, error } = authContext;
+  const { setAlert } = alertContext;
+  // const errorMemo = useMemo(() => {
+  //   return errorLogin()
+  // })
 
-  useEffect(() => {
-    loadUser();
-    if (isAuthenticated) {
-      props.history.push('/');
-    }
+  useEffect( () => {
+    document.title = 'Login';
     //eslint-disable-next-line
-  }, [isAuthenticated, props.history]);
+  }, [isAuthenticated, error, loading, props.history]);
 
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
+
   const { email, password } = user;
 
   const onChange = (e) => {
@@ -38,14 +43,45 @@ const Login = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email === '' || password === '') {
-      toast.error('Pleae fill all fields', { closeButton: true });
-    } else {
-      login({
-        email,
-        password,
-      });
+      setAlert(
+        'Pleae fill all fields',
+        'error',
+        'danger',
+        'exclamation-triangle',
+        5000
+      );
+    } 
+    if(error ) {
+      console.log("yes to error")
+      setAlert(
+        error,
+        'error',
+        'danger',
+        'exclamation-triangle',
+        5000
+      );
+
     }
-  };
+    
+    login({
+      email,
+      password,
+    }).then((res) => {
+      if(res) {
+          if(res.response.status === 401 ) {
+            setAlert(res.response.data.error,'error','danger','exclamation-triangle',5000)
+          }
+    }
+    })
+     
+
+   
+  }
+
+
+  if(isAuthenticated) {
+    return <Redirect to="/" />
+  }
   return (
     <main style={{ marginTop: '10rem' }}>
       <MDBContainer className="mt-5 py-5">
@@ -92,6 +128,7 @@ const Login = (props) => {
                   <div className="text-center mt-4">
                     <MDBBtn color="deep-orange" className="mb-3" type="submit">
                       Login
+                      <MDBIcon icon="sign-in-alt" className="ml-2" />
                     </MDBBtn>
                   </div>
                 </form>
@@ -104,5 +141,7 @@ const Login = (props) => {
     </main>
   );
 };
+
+
 
 export default Login;
