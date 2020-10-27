@@ -128,9 +128,10 @@ const BootcampState = (props) => {
         formData,
         config
       );
+
       dispatch({
         type: UPLOAD_PHOTO,
-        payload: res.data,
+        payload: res.data.data,
       });
     } catch (error) {
       dispatch({

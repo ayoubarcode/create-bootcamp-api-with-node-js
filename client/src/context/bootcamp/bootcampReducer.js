@@ -36,7 +36,8 @@ export default (state, action) => {
     case UPLOAD_PHOTO:
       return {
         ...state,
-        photo_name: action.payload,
+        current: {...state.current, photo:action.payload},
+        // photo_name: action.payload,
         loading: false,
       };
 

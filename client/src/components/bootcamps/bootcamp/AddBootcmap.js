@@ -8,6 +8,17 @@ import Preload from './../../pages/Preload';
 // utils
 import useLocalStorage from './../../../utils/useLocalStorage';
 
+
+const options = [
+  {value:'Web Development', label:"Web Development" },
+  {value:'Mobile Development' , label:"Mobile Development"},
+  {value:'UI/UX' , label:"UI/UX"},
+  {value:'Data Science' , label:"Data Science"},
+  {value:'Business' , label:"Business"},
+  {value:'Other' , label:"Other"},
+]
+
+
 const AddBootcmap = () => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
@@ -45,12 +56,7 @@ const AddBootcmap = () => {
     acceptGi: false,
   });
 
-  // useEffect(() => {
-  //   getManageBootcamp();
-  //   if (current !== null) {
-  //     setBootcamp(current);
-  //   }
-  // });
+ 
 
   const {
     name,
@@ -243,11 +249,11 @@ const AddBootcmap = () => {
                   <select
                     name="careers"
                     className="custom-select"
-                    multiple=""
                     value={careers}
                     onChange={onChange}
+                    defaultValue={`Select all that apply`}
                   >
-                    <option selected="">Select all that apply</option>
+                    <option value="Select all that apply" disabled>Select all that apply</option>
                     <option value="Web Development">Web Development</option>
                     <option value="Mobile Development">
                       Mobile Development

@@ -1,48 +1,81 @@
-import React from 'react';
+import React, { useEffect, useContext} from 'react';
+import CourseContext  from './../../context/courses/courseContext'
+import BootcampContext from './../../context/bootcamp/bootcampContext'
+import Preload from './../pages/Home'
+import{ Link } from 'react-router-dom'
+const ManageCourse = (props) => {
 
-const ManageCourse = () => {
+
+  const courseContext = useContext(CourseContext)
+  const bootcampContext = useContext(BootcampContext)
+
+  const { current ,getManageBootcamp }  = bootcampContext
+  const { getCourses, courses,loading }  = courseContext
+  
+  const id = props.match.params.bootcampId;
+
+
+  useEffect(() => {
+      getManageBootcamp()
+      getCourses(id)
+   
+    
+   
+    console.log('this is id', id)
+
+  },[id])
+
+
+  if(loading) {
+    return <Preload />;
+  }
+
   return (
-    <section class="container mt-5 py-5">
-      <div class="row">
-        <div class="col-md-8 m-auto">
-          <div class="card bg-white py-2 px-4">
-            <div class="card-body">
-              <a
-                href="manage-bootcamp.html"
-                class="btn btn-link text-secondary my-3"
+    <section className="container mt-5 py-5">
+      <div className="row">
+        <div className="col-md-8 m-auto">
+          <div className="card bg-white py-2 px-4">
+            <div className="card-body">
+              <Link
+              to="/bootcamps/manage"
+                className="btn btn-link text-secondary my-3"
               >
-                <i class="fas fa-chevron-left" aria-hidden="true"></i> Manage
+                <i className="fas fa-chevron-left" aria-hidden="true"></i> Manage
                 Bootcamp
-              </a>
-              <h1 class="mb-4">Manage Courses</h1>
-              <div class="card mb-3">
-                <div class="row no-gutters">
-                  <div class="col-md-4">
-                    <img src="img/image_1.jpg" class="card-img" alt="..." />
+              </Link>
+              <h1 className="mb-4">Manage Courses</h1>
+              <div className="card mb-3">
+                <div className="row no-gutters">
+                  <div className="col-md-4">
+                    <img src={current&& `/uploads/${current.photo}`} className="card-img" alt="..." />
                   </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">
+                  <div className="col-md-8">
+                    <div className="card-body">
+                      <h5 className="card-title">
                         <a href="bootcamp.html">
-                          Devworks Bootcamp
-                          <span class="float-right badge badge-success">
+                          {current && current.name}
+                          <span className="float-right badge badge-success">
                             4.9
                           </span>
                         </a>
                       </h5>
-                      <span class="badge badge-dark mb-2">Boston, MA</span>
-                      <p class="card-text">
-                        Web Development, UI/UX, Mobile Development
+                      <span className="badge badge-dark mb-2">
+                      {current && current.location.city ? current.location.city : null},{' '}
+                        {current && current.location.state ? current.location.state : null}
+                      </span>
+                      <p className="card-text">
+                      {current && current.careers.map((c) => `${c},`)}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <a href="add-course.html" class="btn btn-primary btn-block mb-4">
+              <Link to ={`/add/${id}/course`}  className="btn btn-primary btn-block mb-4">
                 Add Bootcamp Course
-              </a>
-              <table class="table table-striped">
+              </Link>
+              {courses && courses.count > 0 ? ( 
+              <table className="table table-striped">
                 <thead>
                   <tr>
                     <th scope="col">Title</th>
@@ -50,30 +83,32 @@ const ManageCourse = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Front End Web Development</td>
+                {courses.data.map((course)  => (
+                  <tr key={course._id}>
+                    <td>{course.title}</td>
                     <td>
-                      <a href="add-course.html" class="btn btn-secondary">
-                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                      <a href="add-course.html" className="btn btn-secondary">
+                        <i className="fas fa-pencil-alt" aria-hidden="true"></i>
                       </a>
-                      <button class="btn btn-danger">
-                        <i class="fas fa-times" aria-hidden="true"></i>
+                      <button className="btn btn-danger">
+                        <i className="fas fa-times" aria-hidden="true"></i>
                       </button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Full Stack Web Development</td>
-                    <td>
-                      <a href="add-course.html" class="btn btn-secondary">
-                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                      </a>
-                      <button class="btn btn-danger">
-                        <i class="fas fa-times" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  ))
+                }
+                  
                 </tbody>
-              </table>
+                <caption>
+                <p> Total {courses.count > 1 ? `courses` : `course`}: {courses.count}</p>
+                </caption>
+              </table>) : 
+                (
+                  <p  className="mb-4">
+                  No courses ! 
+              </p>
+                )
+              }
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ import {
 
 import AuthContext from './../../context/auth/authContext';
 import { Redirect } from 'react-router-dom';
+import Preload from '../pages/Preload';
 
 const Login = (props) => {
   const authContext = useContext(AuthContext);
@@ -35,6 +36,12 @@ const Login = (props) => {
     password: '',
   });
 
+  const [isLoading, setIsLoading] = useState(loading)
+
+  useEffect( () => {
+      console.log('this is isLoading', isLoading)
+  },[isLoading])
+
   const { email, password } = user;
 
   const onChange = (e) => {
@@ -50,19 +57,8 @@ const Login = (props) => {
         'exclamation-triangle',
         5000
       );
-    } 
-    if(error ) {
-      console.log("yes to error")
-      setAlert(
-        error,
-        'error',
-        'danger',
-        'exclamation-triangle',
-        5000
-      );
-
-    }
-    
+    }  else {
+         
     login({
       email,
       password,
@@ -73,11 +69,20 @@ const Login = (props) => {
           }
     }
     })
+
+    setIsLoading(loading)
+
+  
      
+    }
+    
+ 
 
    
   }
 
+
+ 
 
   if(isAuthenticated) {
     return <Redirect to="/" />
@@ -126,8 +131,9 @@ const Login = (props) => {
                   />
 
                   <div className="text-center mt-4">
+                  
                     <MDBBtn color="deep-orange" className="mb-3" type="submit">
-                      Login
+                    {!loading &&  !loading ? 'Login': 'Loading...' }
                       <MDBIcon icon="sign-in-alt" className="ml-2" />
                     </MDBBtn>
                   </div>

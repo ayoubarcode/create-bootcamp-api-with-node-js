@@ -2,7 +2,7 @@ const ErrorResponse = require('./../utils/errorResponse');
 const asyncHandler = require('./../middleware/async');
 const geocoder = require('./../utils/geoCoder');
 const Bootcamp = require('./../models/Bootcamp');
-
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 // todo @desc  Get All bootcamps
@@ -81,7 +81,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   let queryStr = JSON.stringify(reqQuery);
 
   console.log(queryStr);
-  query = model.find(JSON.parse(queryStr));
+  query = Bootcamp.find(JSON.parse(queryStr));
 
   console.log(bootcamp);
 
@@ -234,7 +234,7 @@ exports.bootcampUplodPhoto = asyncHandler(async (req, res, next) => {
   }
 
   // Create Custom filename
-  file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`;
+  file.name = `photo_${bootcamp._id}${uuidv4()}${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
     if (err) {

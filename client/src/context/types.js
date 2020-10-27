@@ -31,3 +31,11 @@ export const FAILED_REVIEW = 'FAILED_REVIEW';
 // Alert types
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
+
+
+
+// Course types
+export const GET_ALL_COURSES = 'GET_ALL_COURSES';
+export const GET_COURSES_BY_BOOTCAMP = 'GET_COURSES_BY_BOOTCAMP';
+export const COURSES_FAIL = 'COURSES_FAIL';
+export const ADD_COURSE = 'ADD_COURSE';

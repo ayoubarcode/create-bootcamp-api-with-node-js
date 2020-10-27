@@ -15,28 +15,29 @@ const ManageBootcmap = () => {
     loading,
     getManageBootcamp,
     uploadPhoto,
-    photo_name,
   } = bootcampContext;
+
   const { setAlert } = alertContext;
 
   const [selectedFile, SetSelectedFile] = useState(null);
   useEffect(() => {
     getManageBootcamp();
+
   }, []);
 
   const onChangeFile = (e) => {
     let file = e.target.files[0];
-    console.log(file);
     SetSelectedFile(file);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (selectedFile === null) {
-      toast.error('miss file', { closeButton: true });
+      toast.error('missing file', { closeButton: true });
     } else {
       const data = new FormData();
       data.append('file', selectedFile);
+      
       uploadPhoto(current.id, data);
       SetSelectedFile(data.name);
 
@@ -48,10 +49,10 @@ const ManageBootcmap = () => {
         5000
       );
 
-      console.log(`data is ${JSON.stringify(data)}`);
-      // SetSelectedFile()
     }
   };
+
+  
   if (user) {
     if (user.role === 'user') {
       return (
@@ -150,7 +151,7 @@ const ManageBootcmap = () => {
                 Edit Bootcamp Details
               </MDBLink>
               <MDBLink
-                to="/courses/manage"
+                to={current && `/courses/${current.id}/manage`}
                 href="manage-courses.html"
                 className="btn btn-secondary btn-block"
               >

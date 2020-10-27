@@ -20,6 +20,7 @@ import ManageBootcmap from './components/bootcamps/bootcamp/ManageBootcmap';
 
 // Coures
 import ManageCourse from './components/courses/ManageCourse';
+import CourseForm from './components/courses/CourseForm';
 // Reviews
 import ReviewForm from './components/reviews/ReviewForm';
 import ReviewBootcamp from './components/reviews/ReviewBootcamp';
@@ -41,6 +42,7 @@ import AuthState from './context/auth/AuthState';
 import BootcampState from './context/bootcamp/BootcampState';
 import ReviewState from './context/reviews/ReviewState';
 import AlertState from './context/alert/AlertState';
+import CourseState from './context/courses/CourseState'
 
 import './App.css';
 
@@ -54,6 +56,7 @@ const App = () => {
   return (
     <AuthState>
       <BootcampState>
+      <CourseState>
         <ReviewState>
           <AlertState>
             <Alert />
@@ -105,8 +108,10 @@ const App = () => {
                   exact
                 />
                 {/*  Courses */}
+
+                <PrivateRoute exact path='/add/:bootcampId/course' component={CourseForm} />
                 <PrivateRoute
-                  path="/courses/manage"
+                  path="/courses/:bootcampId/manage"
                   component={ManageCourse}
                   exact
                 />
@@ -115,6 +120,7 @@ const App = () => {
             </Router>
           </AlertState>
         </ReviewState>
+        </CourseState>
       </BootcampState>
     </AuthState>
   );
