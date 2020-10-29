@@ -146,14 +146,13 @@ const ManageBootcmap = () => {
               </form>
               <MDBLink
                 to="/bootcamps/add"
-                className="btn btn-primary btn-block"
+                className="btn btn-primary btn-block mb-2"
               >
                 Edit Bootcamp Details
               </MDBLink>
               <MDBLink
                 to={current && `/courses/${current.id}/manage`}
-                href="manage-courses.html"
-                className="btn btn-secondary btn-block"
+                className="btn btn-secondary btn-block mb-2"
               >
                 Manage Courses
               </MDBLink>

@@ -3,34 +3,42 @@ import CourseContext  from './../../context/courses/courseContext'
 import BootcampContext from './../../context/bootcamp/bootcampContext'
 import Preload from './../pages/Home'
 import{ Link } from 'react-router-dom'
+import SingleCourse  from './SingleCourse'
 const ManageCourse = (props) => {
 
-
+  // context API
   const courseContext = useContext(CourseContext)
   const bootcampContext = useContext(BootcampContext)
 
+  // destructing properties from state 
   const { current ,getManageBootcamp }  = bootcampContext
-  const { getCourses, courses,loading }  = courseContext
+  const { getCourses, courses,loading, deleteCourse, count }  = courseContext
   
-  const id = props.match.params.bootcampId;
+  // get bootcampID from params
+  const bootcampId = props.match.params.bootcampId;
 
 
+  const handleDeleteCourse = (id) => {
+    console.log(id)
+    deleteCourse(id)
+  }
+
+  // Get Manage Bootcmap &courses  before loading the component
   useEffect(() => {
+
       getManageBootcamp()
-      getCourses(id)
-   
-    
-   
-    console.log('this is id', id)
+      getCourses(bootcampId)
 
-  },[id])
+  },[bootcampId, loading])
 
 
+  // loading until fetching data from the API 
   if(loading) {
     return <Preload />;
   }
 
   return (
+    
     <section className="container mt-5 py-5">
       <div className="row">
         <div className="col-md-8 m-auto">
@@ -71,36 +79,29 @@ const ManageCourse = (props) => {
                 </div>
               </div>
 
-              <Link to ={`/add/${id}/course`}  className="btn btn-primary btn-block mb-4">
+              <Link to ={`/add/${bootcampId}/course`}  className="btn btn-primary btn-block mb-4">
                 Add Bootcamp Course
               </Link>
-              {courses && courses.count > 0 ? ( 
-              <table className="table table-striped">
-                <thead>
+              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+              {courses && courses.length > 0 ? ( 
+              <table className="table  table-hover">
+                <thead className="orange dark-text fixed">
                   <tr>
                     <th scope="col">Title</th>
-                    <th scope="col"></th>
+                    <th scope="col" >edit</th>
+                    <th scope="col">delete</th>
                   </tr>
                 </thead>
                 <tbody>
-                {courses.data.map((course)  => (
-                  <tr key={course._id}>
-                    <td>{course.title}</td>
-                    <td>
-                      <a href="add-course.html" className="btn btn-secondary">
-                        <i className="fas fa-pencil-alt" aria-hidden="true"></i>
-                      </a>
-                      <button className="btn btn-danger">
-                        <i className="fas fa-times" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                  </tr>
+                {courses.map((course)  => (
+                 <SingleCourse key={course._id} course={course} bootcampId={bootcampId} onCancel={handleDeleteCourse} /> 
                   ))
                 }
                   
                 </tbody>
                 <caption>
-                <p> Total {courses.count > 1 ? `courses` : `course`}: {courses.count}</p>
+                <p> Total {courses.length > 1 ? `courses` : `course`}: {courses.length}</p>
                 </caption>
               </table>) : 
                 (
@@ -112,6 +113,7 @@ const ManageCourse = (props) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

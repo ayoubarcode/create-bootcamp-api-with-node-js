@@ -40,6 +40,7 @@ const AddBootcmap = () => {
     if (current !== null) {
       setBootcamp(current);
     }
+    
   }, [loading]);
 
   const [bootcamp, setBootcamp] = useState({

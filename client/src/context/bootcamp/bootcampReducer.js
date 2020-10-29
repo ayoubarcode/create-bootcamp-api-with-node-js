@@ -16,6 +16,7 @@ export default (state, action) => {
         bootcamps: action.payload.data,
         loading: false,
         error: null,
+        current:null,
       };
 
     case SIGNLE_BOOTCAMP:

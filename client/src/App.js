@@ -109,13 +109,19 @@ const App = () => {
                 />
                 {/*  Courses */}
 
-                <PrivateRoute exact path='/add/:bootcampId/course' component={CourseForm} />
+                <PrivateRoute 
+                    exact 
+                    path={`/add/:bootcampId/course`}  
+                    component={CourseForm} />
                 <PrivateRoute
-                  path="/courses/:bootcampId/manage"
-                  component={ManageCourse}
                   exact
+                  path={`/courses/:bootcampId/manage`}
+                  component={ManageCourse}
+                  
                 />
+
                 <Route path="*" exact={true} component={My404Component} />
+                
               </Switch>
             </Router>
           </AlertState>

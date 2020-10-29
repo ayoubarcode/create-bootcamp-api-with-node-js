@@ -63,7 +63,7 @@ const AuthState = (props) => {
         payload: error.response.data.error,
       });
 
-      return error
+      // return error
     }
   };
 
