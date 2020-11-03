@@ -5,7 +5,8 @@ import {
     SET_CURRENT_COURSE,
     GET_SINGLE_COURSE,
     CLEAR_CURRENT_COURSE,
-    DELTE_COURSE
+    DELTE_COURSE,
+    SET_LOADING_COURSE
 
 } from './../types';
 
@@ -25,7 +26,7 @@ export default (state, action) => {
             return {
                 ...state,
                 current: action.payload,
-                loading:true
+                loading:false
             }
         case GET_SINGLE_COURSE:
             return {
@@ -56,6 +57,11 @@ export default (state, action) => {
                 error: null,
             };
         
+        case SET_LOADING_COURSE:
+            return {
+                ...state, 
+                loading:true
+            }
         
         case ADD_COURSE:
             return {

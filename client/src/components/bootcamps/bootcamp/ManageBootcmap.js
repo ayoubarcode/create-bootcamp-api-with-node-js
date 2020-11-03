@@ -3,6 +3,7 @@ import BootcampContext from './../../../context/bootcamp/bootcampContext';
 import AuthContext from './../../../context/auth/authContext';
 import AlertContext from './../../../context/alert/alertContext';
 import Preload from './../../pages/Preload';
+import { Link} from 'react-router-dom'
 import { ToastContainer, toast, MDBLink, MDBIcon } from 'mdbreact';
 const ManageBootcmap = () => {
   const authContext = useContext(AuthContext);
@@ -150,12 +151,12 @@ const ManageBootcmap = () => {
               >
                 Edit Bootcamp Details
               </MDBLink>
-              <MDBLink
+              <Link
                 to={current && `/courses/${current.id}/manage`}
                 className="btn btn-secondary btn-block mb-2"
               >
                 Manage Courses
-              </MDBLink>
+              </Link>
               <a href="#" className="btn btn-danger btn-block">
                 Remove Bootcamp
               </a>

@@ -4,38 +4,42 @@ import BootcampContext from './../../context/bootcamp/bootcampContext'
 import Preload from './../pages/Home'
 import{ Link } from 'react-router-dom'
 import SingleCourse  from './SingleCourse'
+import { useParams } from "react-router-dom";
 const ManageCourse = (props) => {
 
   // context API
   const courseContext = useContext(CourseContext)
   const bootcampContext = useContext(BootcampContext)
 
+
   // destructing properties from state 
   const { current ,getManageBootcamp }  = bootcampContext
   const { getCourses, courses,loading, deleteCourse, count }  = courseContext
   
   // get bootcampID from params
-  const bootcampId = props.match.params.bootcampId;
+  // const bootcampId = props.match.params.bootcampId;
 
+  const {bootcampId} = useParams();
 
   const handleDeleteCourse = (id) => {
-    console.log(id)
     deleteCourse(id)
   }
 
   // Get Manage Bootcmap &courses  before loading the component
   useEffect(() => {
-
       getManageBootcamp()
       getCourses(bootcampId)
 
-  },[bootcampId, loading])
+
+  },[loading])
 
 
   // loading until fetching data from the API 
-  if(loading) {
+
+  if(loading || courses === null) {
     return <Preload />;
   }
+
 
   return (
     
@@ -82,7 +86,7 @@ const ManageCourse = (props) => {
               <Link to ={`/add/${bootcampId}/course`}  className="btn btn-primary btn-block mb-4">
                 Add Bootcamp Course
               </Link>
-              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+              <div className="table-wrapper-scroll-y my-custom-scrollbar">
 
               {courses && courses.length > 0 ? ( 
               <table className="table  table-hover">

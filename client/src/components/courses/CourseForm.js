@@ -15,7 +15,7 @@ const CourseForm = (props) => {
         weeks: '',
         tuition: '',
         minimumSkill: '',
-        bootcamp:'',
+        bootcamp:null,
         scholarhipsAvailable:false
 
     })
@@ -37,6 +37,7 @@ const CourseForm = (props) => {
             delete obj.user
             delete obj.createdAt
             delete obj.__v
+            delete obj._id
             setCourse(obj)
         }
         
@@ -44,11 +45,7 @@ const CourseForm = (props) => {
 
 
 
-    // if(loading) {
-    //     return <Preload />
-    // }
-
-
+ 
 
     const  isAllfill = () => {
         if(title === '' || description  === '' || weeks === '' ||
@@ -102,7 +99,12 @@ const CourseForm = (props) => {
     
 
 
-  
+    if(loading) {
+        return <Preload />
+    }
+
+
+
     return (
         <div>
             <section className="container mt-5 py-5" style={{width:'50wv'}}>

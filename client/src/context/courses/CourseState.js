@@ -8,7 +8,8 @@ import {
     GET_SINGLE_COURSE,
     SET_CURRENT_COURSE,
     CLEAR_CURRENT_COURSE,
-    DELTE_COURSE
+    DELTE_COURSE,
+    SET_LOADING_COURSE
 } from './../types';
 
 
@@ -32,6 +33,7 @@ const CourseState = (props) => {
     // load courses by bootcamp
     const getCourses = async(bootcampId) => {
         try {
+            setLoading()
             const res = await axios.get(`/api/v1/bootcamps/${bootcampId}/courses`);
             dispatch({
                 type:GET_COURSES_BY_BOOTCAMP,
@@ -53,6 +55,7 @@ const CourseState = (props) => {
 
     const getSingleCourse = async (courseId) => {
         try {
+            setLoading()
             const res = await axios.get(`/api/v1/courses/${courseId}`)
             dispatch({
                 type:GET_SINGLE_COURSE,
@@ -126,6 +129,13 @@ const CourseState = (props) => {
         }
     }
 
+    //Set Loading to true
+const setLoading =  () => {
+    console.log('fire set loading course')
+    return {
+        type:SET_LOADING_COURSE
+    }
+}
 
     return(
         <CourseContext.Provider
@@ -138,7 +148,8 @@ const CourseState = (props) => {
                 addCourse,
                 getSingleCourse,
                 setCurrentContact,
-                deleteCourse
+                deleteCourse,
+                setLoading
 
             }}
         >
