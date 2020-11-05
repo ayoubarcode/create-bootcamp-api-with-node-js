@@ -56,76 +56,77 @@ const App = () => {
   return (
     <AuthState>
       <BootcampState>
-      <CourseState>
-        <ReviewState>
-          <AlertState>
-            <Alert />
-            <Router>
-              <Navbar />
-              <Switch>
-                <PrivateRoute exact path="/" component={Home} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <PrivateRoute
-                  exact
-                  path="/manage-account"
-                  component={ManageAccount}
-                />
+        <CourseState>
+          <ReviewState>
+            <AlertState>
+              <Alert />
+              <Router>
+                <Navbar />
+                <Switch>
+                  <PrivateRoute exact path="/" component={Home} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/register" component={Register} />
 
-                {/* Manage Bootcamps */}
-                <PrivateRoute
-                  exact
-                  path="/bootcamps/:zipcode/:miles"
-                  component={Bootcamps}
-                />
-                <PrivateRoute
-                  path="/bootcamps/add"
-                  component={AddBootcamp}
-                  exact
-                />
-                <PrivateRoute
-                  exact
-                  path="/bootcamps/manage"
-                  component={ManageBootcmap}
-                />
+                  {/* Manage user account */}
+                  <PrivateRoute
+                    exact
+                    path="/manage-account"
+                    component={ManageAccount}
+                  />
 
-                <Route exact path="/bootcamp/:id" component={Bootcamp} />
+                  {/* Manage Bootcamps */}
+                  <PrivateRoute
+                    exact
+                    path="/bootcamps/:zipcode/:miles"
+                    component={Bootcamps}
+                  />
+                  <PrivateRoute
+                    path="/bootcamps/add"
+                    component={AddBootcamp}
+                    exact
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/bootcamps/manage"
+                    component={ManageBootcmap}
+                  />
 
-                {/* Manage Reviews */}
-                <PrivateRoute
-                  path="/add-review/:id"
-                  component={ReviewForm}
-                  exact
-                />
-                <PrivateRoute
-                  path="/read-reviews/:id"
-                  component={ReviewBootcamp}
-                  exact
-                />
-                <PrivateRoute
-                  path="/bootcamps/manage"
-                  component={ReviewBootcamp}
-                  exact
-                />
-                {/*  Courses */}
+                  <Route exact path="/bootcamp/:id" component={Bootcamp} />
 
-                <PrivateRoute 
-                    exact 
-                    path={`/add/:bootcampId/course`}  
-                    component={CourseForm} />
-                <PrivateRoute
-                  exact
-                  path={`/courses/:bootcampId/manage`}
-                  component={ManageCourse}
+                  {/* Manage Reviews */}
+                  <PrivateRoute
+                    path="/add-review/:id"
+                    component={ReviewForm}
+                    exact
+                  />
+                  <PrivateRoute
+                    path="/read-reviews/:id"
+                    component={ReviewBootcamp}
+                    exact
+                  />
+                  <PrivateRoute
+                    path="/bootcamps/manage"
+                    component={ReviewBootcamp}
+                    exact
+                  />
                   
-                />
+                  {/*  Courses */}
+                  <PrivateRoute
+                    exact
+                    path={`/add/:bootcampId/course`}
+                    component={CourseForm}
+                  />
+                  <PrivateRoute
+                    exact
+                    path={`/courses/:bootcampId/manage`}
+                    component={ManageCourse}
+                  />
 
-                <Route path="*" exact={true} component={My404Component} />
-                
-              </Switch>
-            </Router>
-          </AlertState>
-        </ReviewState>
+                  <Route path="*" exact={true} component={My404Component} />
+                </Switch>
+              </Router>
+            </AlertState>
+          </ReviewState>
         </CourseState>
       </BootcampState>
     </AuthState>
