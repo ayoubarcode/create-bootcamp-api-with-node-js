@@ -93,6 +93,10 @@ const AddBootcmap = () => {
     return re.test(url) === false ? false : true;
   };
 
+
+  const onOptionClicked = (value) => {
+    setBootcamp({ ...bootcamp, careers: value });
+  };
   // handle submit form
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -164,7 +168,7 @@ const AddBootcmap = () => {
                     name="name"
                     className="form-control"
                     placeholder="Bootcamp Name"
-                    required=""
+                    required={true}
                     value={name}
                     onChange={onChange}
                   />
@@ -172,15 +176,19 @@ const AddBootcmap = () => {
 
                 <div className="form-group">
                   <label>Address</label>
-                  <input
-                    type="text"
+                  
+                  <input type="text"
+                  
                     name="address"
+                    id="address"
                     className="form-control"
                     placeholder="Full Address"
-                    required=""
                     value={address}
+                    
                     onChange={onChange}
+                    required={true}
                   />
+                  
                   <small className="form-text text-muted">
                     Street, city, state, etc
                   </small>
@@ -250,19 +258,19 @@ const AddBootcmap = () => {
                   <select
                     name="careers"
                     className="custom-select"
-                    value={careers}
+                    value={options[0].label}
                     onChange={onChange}
-                    defaultValue={`Select all that apply`}
+                   
                   >
-                    <option value="Select all that apply" disabled>Select all that apply</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="Mobile Development">
-                      Mobile Development
-                    </option>
-                    <option value="UI/UX">UI/UX</option>
-                    <option value="Data Science">Data Science</option>
-                    <option value="Business">Business</option>
-                    <option value="Other">Other</option>
+                    {options.map((option) => (
+                      <option
+                              value={option.value}
+                              key={Math.random()}
+                      
+                      >
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-check">

@@ -50,7 +50,7 @@ const Home = (props) => {
         'error',
         'danger',
         'exclamation-triangle',
-        4000
+        500
       );
     } else {
       props.history.push(`/bootcamps/${zipcode}/${miles}`);

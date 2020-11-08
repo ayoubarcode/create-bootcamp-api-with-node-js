@@ -60,12 +60,12 @@ const ManageCourse = (props) => {
                   <div className="col-md-8">
                     <div className="card-body">
                       <h5 className="card-title">
-                        <a href="bootcamp.html">
+                        <Link to={`/bootcamp/${current._id}`}>
                           {current && current.name}
                           <span className="float-right badge badge-success">
                             4.9
                           </span>
-                        </a>
+                        </Link>
                       </h5>
                       <span className="badge badge-dark mb-2">
                         {current && current.location.city
