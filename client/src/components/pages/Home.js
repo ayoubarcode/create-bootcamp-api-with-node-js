@@ -42,9 +42,8 @@ const Home = (props) => {
   // handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(radius);
 
-    if (zipcode === '' || miles === '') {
+    if ((zipcode === '' && miles !== '') || (zipcode !== '' && miles === '')) {
       setAlert(
         'must fill all fields please !',
         'error',
@@ -53,7 +52,8 @@ const Home = (props) => {
         500
       );
     } else {
-      props.history.push(`/bootcamps/${zipcode}/${miles}`);
+      zipcode === '' && miles === '' ?  props.history.push(`/bootcamps`) : 
+      props.history.push(`/bootcamps/${zipcode}/${miles}`)
     }
   };
 

@@ -26,9 +26,10 @@ const BootcampState = (props) => {
   const [state, dispatch] = useReducer(bootcampreducer, initialState);
 
   // get All bootcamps
-  const getAllBootcamps = async () => {
+  const getAllBootcamps = async (miles=null,zipcode=null) => {
     try {
-      const res = await axios.get(`/api/v1/bootcamps`);
+
+      const res = miles ===null  && zipcode ===null  ?  await axios.get(`/api/v1/bootcamps`) : await axios.get(`/api/v1/bootcamps/radius/${miles}/${zipcode}`) ;
       dispatch({
         type: GET_ALL_BOOTCAMPS,
         payload: res.data,
@@ -102,6 +103,26 @@ const BootcampState = (props) => {
     };
     try {
       const res = await axios.put(`/api/v1/bootcamps/${id}`, formData, config);
+      dispatch({
+        type: UPDATE_BOOTCAMP,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: BOOTCAMPS_FAIL,
+        payload: 'error',
+      });
+    }
+  };
+  // Delete a bootcamp
+  const deleteBootcamp = async (bootcampId) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.delete(`/api/v1/bootcamps/${bootcampId}`, config);
       dispatch({
         type: UPDATE_BOOTCAMP,
         payload: res.data,

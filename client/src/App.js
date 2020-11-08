@@ -80,6 +80,7 @@ const App = () => {
                     path="/bootcamps/:zipcode/:miles"
                     component={Bootcamps}
                   />
+                  <PrivateRoute exact path="/bootcamps" component={Bootcamps} />
                   <PrivateRoute
                     path="/bootcamps/add"
                     component={AddBootcamp}
@@ -109,7 +110,7 @@ const App = () => {
                     component={ReviewBootcamp}
                     exact
                   />
-                  
+
                   {/*  Courses */}
                   <PrivateRoute
                     exact

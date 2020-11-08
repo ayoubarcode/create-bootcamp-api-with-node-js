@@ -40,7 +40,6 @@ const AddBootcmap = () => {
     if (current !== null) {
       setBootcamp(current);
     }
-    
   }, [loading]);
 
   const [bootcamp, setBootcamp] = useState({
@@ -57,8 +56,6 @@ const AddBootcmap = () => {
     acceptGi: false,
   });
 
- 
-
   const {
     name,
     description,
@@ -66,7 +63,6 @@ const AddBootcmap = () => {
     phone,
     email,
     address,
-    careers,
     housing,
     jobAssistance,
     jobGuarantee,
@@ -93,10 +89,6 @@ const AddBootcmap = () => {
     return re.test(url) === false ? false : true;
   };
 
-
-  const onOptionClicked = (value) => {
-    setBootcamp({ ...bootcamp, careers: value });
-  };
   // handle submit form
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -176,19 +168,18 @@ const AddBootcmap = () => {
 
                 <div className="form-group">
                   <label>Address</label>
-                  
-                  <input type="text"
-                  
+
+                  <input
+                    type="text"
                     name="address"
                     id="address"
                     className="form-control"
                     placeholder="Full Address"
                     value={address}
-                    
                     onChange={onChange}
                     required={true}
                   />
-                  
+
                   <small className="form-text text-muted">
                     Street, city, state, etc
                   </small>
@@ -260,14 +251,9 @@ const AddBootcmap = () => {
                     className="custom-select"
                     value={options[0].label}
                     onChange={onChange}
-                   
                   >
                     {options.map((option) => (
-                      <option
-                              value={option.value}
-                              key={Math.random()}
-                      
-                      >
+                      <option value={option.value} key={Math.random()}>
                         {option.label}
                       </option>
                     ))}

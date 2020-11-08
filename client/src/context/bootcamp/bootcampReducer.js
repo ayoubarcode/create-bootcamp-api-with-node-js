@@ -52,6 +52,7 @@ export default (state, action) => {
     case BOOTCAMPS_FAIL:
       return {
         ...state,
+        loading: true,
         error: action.payload,
       };
     default:
